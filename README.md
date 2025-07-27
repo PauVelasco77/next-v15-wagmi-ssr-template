@@ -1,87 +1,98 @@
-# Next.js 15 + Wagmi SSR + MetaMask Example
+# Next.js 15 + Wagmi SSR Template
 
-A complete example demonstrating how to integrate MetaMask wallet connection with Next.js 15, Wagmi v2, and shadcn/ui components with full Server-Side Rendering (SSR) support.
+A production-ready template for building Web3 applications with Next.js 15, Wagmi v2, and full Server-Side Rendering (SSR) support. This template provides everything you need to get started with Ethereum wallet integration, including MetaMask support, network switching, and modern UI components.
 
-## Features
-
-- ✅ **MetaMask Integration** - Connect and disconnect wallet with injected providers
-- ✅ **Multiple Wallets** - Support for MetaMask and other injected wallets
-- ✅ **Network Switching** - Switch between Ethereum Mainnet and Sepolia testnet
-- ✅ **Account Information** - Display wallet address, ENS names, and ETH balance
-- ✅ **SSR Support** - Full server-side rendering compatibility with proper hydration
-- ✅ **TypeScript** - Fully typed with proper TypeScript integration
-- ✅ **Modern UI** - Beautiful components using shadcn/ui and Tailwind CSS
-- ✅ **Error Handling** - Robust error handling for wallet operations
-
-## Tech Stack
-
-- **Next.js 15** - React framework with App Router
-- **Wagmi v2** - React hooks for Ethereum
-- **Viem** - TypeScript interface for Ethereum
-- **TanStack Query** - Data synchronization for React
-- **shadcn/ui** - Beautiful and accessible UI components
-- **Tailwind CSS** - Utility-first CSS framework
-- **TypeScript** - Type safety and developer experience
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- MetaMask browser extension installed
-- Ethereum testnet funds (for testing on Sepolia)
-
-### Installation
-
-1. Clone and install dependencies:
+## 🚀 Quick Start
 
 ```bash
-npm install
+# Clone the template
+npx create-next-app@latest my-web3-app --typescript --tailwind --eslint --app --src-dir --import-alias "@/*" --yes
+
+# Navigate to your project
+cd my-web3-app
+
+# Install wagmi dependencies
+npm install wagmi viem @tanstack/react-query
+
+# Copy the template files
+# (See "Template Structure" section below)
 ```
 
-2. Start the development server:
+## ✨ Template Features
 
-```bash
-npm run dev
-```
+### 🔗 **Wallet Integration**
+- **MetaMask Support** - Full MetaMask wallet connection and management
+- **Multiple Wallets** - Support for injected wallets and other providers
+- **Connection States** - Proper loading states and error handling
+- **Auto-reconnection** - Persistent wallet connections across sessions
 
-3. Open [http://localhost:3000](http://localhost:3000) in your browser
+### 🌐 **Network Management**
+- **Multi-chain Support** - Ethereum Mainnet and Sepolia testnet
+- **Network Switching** - Easy switching between supported networks
+- **Chain Validation** - Automatic network detection and validation
+- **Custom Networks** - Easy to add additional networks
 
-### Usage
+### 📊 **Account Information**
+- **Wallet Details** - Display address, ENS names, and balances
+- **Real-time Updates** - Live balance and network updates
+- **ENS Integration** - Ethereum Name Service support
+- **Transaction History** - Ready for transaction tracking
 
-1. **Connect Wallet**: Click on "MetaMask" or "Injected" to connect your wallet
-2. **View Account Info**: Once connected, see your address, ENS name, and balance
-3. **Switch Networks**: Use the network switcher to change between Mainnet and Sepolia
-4. **Disconnect**: Click "Disconnect" to disconnect your wallet
+### 🎨 **Modern UI/UX**
+- **shadcn/ui Components** - Beautiful, accessible UI components
+- **Dark/Light Mode** - Theme switching with system preference
+- **Responsive Design** - Mobile-first responsive layout
+- **Loading States** - Smooth loading indicators and transitions
+- **Error Handling** - User-friendly error messages and recovery
 
-## Project Structure
+### ⚡ **Performance & SSR**
+- **Server-Side Rendering** - Full SSR support with proper hydration
+- **TypeScript** - Complete type safety throughout the application
+- **Optimized Builds** - Production-ready with Next.js optimizations
+- **SEO Friendly** - Proper meta tags and structured data
+
+## 🛠 Tech Stack
+
+| Technology | Purpose | Version |
+|------------|---------|---------|
+| **Next.js 15** | React framework with App Router | 15.4.2 |
+| **Wagmi v2** | React hooks for Ethereum | Latest |
+| **Viem** | TypeScript interface for Ethereum | Latest |
+| **TanStack Query** | Data synchronization | Latest |
+| **shadcn/ui** | UI component library | Latest |
+| **Tailwind CSS** | Utility-first CSS framework | 4.x |
+| **TypeScript** | Type safety and DX | 5.x |
+
+## 📁 Template Structure
 
 ```
 src/
 ├── app/
-│   ├── layout.tsx          # Root layout with Web3Provider
-│   ├── page.tsx            # Main demo page
-│   └── globals.css         # Global styles
+│   ├── layout.tsx              # Root layout with providers
+│   ├── page.tsx                # Main demo page
+│   └── globals.css             # Global styles
 ├── components/
-│   ├── wallet-connect-button.tsx  # Wallet connection component
+│   ├── wallet-connect-button.tsx  # Wallet connection UI
 │   ├── wallet-info.tsx           # Account information display
 │   ├── network-switcher.tsx      # Network switching component
+│   ├── theme-toggle.tsx          # Dark/light mode toggle
+│   ├── theme-provider.tsx        # Theme context provider
 │   └── ui/                       # shadcn/ui components
 ├── lib/
-│   ├── wagmi.ts              # Wagmi configuration
-│   └── utils.ts              # Utility functions
+│   ├── wagmi.ts                  # Wagmi configuration
+│   └── utils.ts                  # Utility functions
 └── providers/
-    └── web3-provider.tsx     # Web3 context provider
+    └── web3-provider.tsx         # Web3 context provider
 ```
 
-## Key Components
+## 🔧 Configuration
 
-### Wagmi Configuration (`src/lib/wagmi.ts`)
+### Wagmi Setup (`src/lib/wagmi.ts`)
 
 ```typescript
-import { createConfig, http } from "wagmi";
-import { mainnet, sepolia } from "wagmi/chains";
-import { injected, metaMask } from "wagmi/connectors";
+import { createConfig, http } from 'wagmi';
+import { mainnet, sepolia } from 'wagmi/chains';
+import { injected, metaMask } from 'wagmi/connectors';
 
 export const config = createConfig({
   chains: [mainnet, sepolia],
@@ -96,103 +107,260 @@ export const config = createConfig({
 
 ### Web3 Provider (`src/providers/web3-provider.tsx`)
 
-Wraps the application with Wagmi and TanStack Query providers for SSR compatibility.
+```typescript
+'use client';
 
-### Wallet Connection (`src/components/wallet-connect-button.tsx`)
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { WagmiProvider } from 'wagmi';
+import { config } from '@/lib/wagmi';
 
-Handles wallet connection/disconnection with loading states and error handling.
+const queryClient = new QueryClient();
 
-### Account Information (`src/components/wallet-info.tsx`)
+export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        {children}
+      </QueryClientProvider>
+    </WagmiProvider>
+  );
+};
+```
 
-Displays connected wallet details including address, ENS name, balance, and network.
+## 🎯 Usage Examples
 
-### Network Switcher (`src/components/network-switcher.tsx`)
+### Connect Wallet
+```typescript
+import { useConnect, useAccount } from 'wagmi';
 
-Allows users to switch between supported Ethereum networks.
+const { connect, connectors } = useConnect();
+const { isConnected, address } = useAccount();
 
-## SSR Considerations
+// Connect to MetaMask
+const handleConnect = () => {
+  const metaMaskConnector = connectors.find(c => c.id === 'metaMask');
+  if (metaMaskConnector) {
+    connect({ connector: metaMaskConnector });
+  }
+};
+```
 
-This example properly handles SSR with:
+### Display Account Info
+```typescript
+import { useAccount, useBalance, useEnsName } from 'wagmi';
 
-- **Hydration-safe providers** - Web3Provider is client-side only
-- **Conditional rendering** - Components check connection state before rendering wallet-specific content
-- **Loading states** - Proper loading indicators during async operations
-- **Error boundaries** - Graceful error handling for wallet operations
+const { address, isConnected } = useAccount();
+const { data: ensName } = useEnsName({ address });
+const { data: balance } = useBalance({ address });
 
-## Customization
+if (isConnected && address) {
+  return (
+    <div>
+      <p>Address: {address}</p>
+      <p>ENS: {ensName}</p>
+      <p>Balance: {balance?.formatted} {balance?.symbol}</p>
+    </div>
+  );
+}
+```
+
+### Switch Networks
+```typescript
+import { useSwitchChain, useChainId } from 'wagmi';
+import { mainnet, sepolia } from 'wagmi/chains';
+
+const { switchChain } = useSwitchChain();
+const chainId = useChainId();
+
+const switchToSepolia = () => {
+  switchChain({ chainId: sepolia.id });
+};
+```
+
+## 🔄 Customization
 
 ### Adding New Networks
 
-Edit `src/lib/wagmi.ts` and `src/components/network-switcher.tsx`:
-
+1. **Update Wagmi Config** (`src/lib/wagmi.ts`):
 ```typescript
-import { polygon, arbitrum } from "wagmi/chains";
+import { polygon, arbitrum } from 'wagmi/chains';
 
-// Add to chains array and transports
-const config = createConfig({
+export const config = createConfig({
   chains: [mainnet, sepolia, polygon, arbitrum],
+  transports: {
+    [mainnet.id]: http(),
+    [sepolia.id]: http(),
+    [polygon.id]: http(),
+    [arbitrum.id]: http(),
+  },
   // ...
 });
 ```
 
-### Adding New Connectors
+2. **Update Network Switcher** (`src/components/network-switcher.tsx`):
+```typescript
+const SUPPORTED_CHAINS = [mainnet, sepolia, polygon, arbitrum];
+```
 
-Add additional wallet connectors in `src/lib/wagmi.ts`:
+### Adding New Wallet Connectors
 
 ```typescript
-import { walletConnect, coinbaseWallet } from "wagmi/connectors";
+import { walletConnect, coinbaseWallet } from 'wagmi/connectors';
 
-const config = createConfig({
+export const config = createConfig({
   connectors: [
     injected(),
     metaMask(),
-    walletConnect({ projectId: "your-project-id" }),
-    coinbaseWallet({ appName: "Your App" }),
+    walletConnect({ projectId: 'your-project-id' }),
+    coinbaseWallet({ appName: 'Your App' }),
   ],
   // ...
 });
 ```
 
-## Troubleshooting
+### Custom Hooks
 
-### Common Issues
+Create custom hooks for common Web3 operations:
 
-1. **Hydration Mismatch**: Ensure all wallet-dependent components are wrapped in client-side checks
-2. **MetaMask Not Detected**: Make sure MetaMask extension is installed and enabled
-3. **Network Errors**: Check that you're connected to a supported network
-4. **Balance Not Loading**: Verify you're connected to the correct network with funds
+```typescript
+// src/hooks/use-wallet.ts
+import { useAccount, useBalance, useEnsName } from 'wagmi';
 
-### Development Tips
+export const useWallet = () => {
+  const { address, isConnected, chainId } = useAccount();
+  const { data: ensName } = useEnsName({ address });
+  const { data: balance } = useBalance({ address });
 
-- Use browser developer tools to inspect wallet connection state
-- Check console for detailed error messages
-- Test with different networks and account states
-- Use React DevTools to inspect component state
+  return {
+    address,
+    isConnected,
+    chainId,
+    ensName,
+    balance,
+  };
+};
+```
 
-## Scripts
+## 🚀 Deployment
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run format` - Format code with Prettier
+### Vercel (Recommended)
 
-## Contributing
+1. **Push to GitHub**:
+```bash
+git add .
+git commit -m "Initial commit"
+git push origin main
+```
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+2. **Deploy on Vercel**:
+- Connect your GitHub repository
+- Vercel will automatically detect Next.js
+- Environment variables are handled automatically
 
-## License
+### Other Platforms
 
-MIT License - see LICENSE file for details
+The template works with any platform that supports Next.js:
+- **Netlify** - Automatic deployment from Git
+- **Railway** - Easy container deployment
+- **AWS Amplify** - Full-stack deployment
+- **Docker** - Containerized deployment
 
-## Resources
+## 🔍 SSR Best Practices
 
-- [Wagmi Documentation](https://wagmi.sh/)
-- [Next.js Documentation](https://nextjs.org/docs)
-- [shadcn/ui Documentation](https://ui.shadcn.com/)
-- [Viem Documentation](https://viem.sh/)
-- [MetaMask Developer Documentation](https://docs.metamask.io/)
+### Hydration Safety
+```typescript
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useAccount } from 'wagmi';
+
+export const WalletComponent = () => {
+  const [mounted, setMounted] = useState(false);
+  const { isConnected } = useAccount();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div>Loading...</div>;
+  }
+
+  return isConnected ? <ConnectedView /> : <ConnectButton />;
+};
+```
+
+### Error Boundaries
+```typescript
+import { ErrorBoundary } from 'react-error-boundary';
+
+export const Web3App = () => {
+  return (
+    <ErrorBoundary fallback={<ErrorFallback />}>
+      <Web3Provider>
+        <YourApp />
+      </Web3Provider>
+    </ErrorBoundary>
+  );
+};
+```
+
+## 🧪 Testing
+
+### Unit Tests
+```bash
+npm install --save-dev @testing-library/react @testing-library/jest-dom jest
+```
+
+### E2E Tests
+```bash
+npm install --save-dev @playwright/test
+npx playwright install
+```
+
+### Test Examples
+```typescript
+// __tests__/wallet-connect.test.tsx
+import { render, screen } from '@testing-library/react';
+import { WalletConnectButton } from '@/components/wallet-connect-button';
+
+describe('WalletConnectButton', () => {
+  it('shows connect button when not connected', () => {
+    render(<WalletConnectButton />);
+    expect(screen.getByText(/connect/i)).toBeInTheDocument();
+  });
+});
+```
+
+## 📚 Learning Resources
+
+- **[Wagmi Documentation](https://wagmi.sh/)** - Complete API reference
+- **[Next.js Documentation](https://nextjs.org/docs)** - Framework guides
+- **[Viem Documentation](https://viem.sh/)** - Ethereum interface
+- **[shadcn/ui Documentation](https://ui.shadcn.com/)** - UI components
+- **[MetaMask Developer Docs](https://docs.metamask.io/)** - Wallet integration
+
+## 🤝 Contributing
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
+
+## 📄 License
+
+This template is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **[Wagmi Team](https://wagmi.sh/)** - For the amazing React hooks
+- **[Viem Team](https://viem.sh/)** - For the TypeScript Ethereum interface
+- **[shadcn/ui](https://ui.shadcn.com/)** - For the beautiful UI components
+- **[Next.js Team](https://nextjs.org/)** - For the incredible React framework
+
+---
+
+**Ready to build the future of Web3?** 🚀
+
+This template provides everything you need to create production-ready Web3 applications with modern tooling, type safety, and excellent developer experience.
